@@ -1,0 +1,144 @@
+﻿@model IEnumerable<Work.Models.Blood>
+
+@{
+    ViewData["Title"] = "Index";
+    var Dates = new List<DateTime?>();
+    var hemoglobin = new List<decimal?>();
+    var hematocrit = new List<decimal?>();
+    var redblood  = new List<decimal?>();
+    var whiteblood = new List<decimal?>();
+    foreach (var item in Model)
+    {
+        Dates.Add(item.ResultsDate);
+        hemoglobin.Add(item.Hemoglobin);
+        hematocrit.Add(item.Hematocrit);
+        redblood.Add(item.RedBloodCellCount);
+        whiteblood.Add(item.WhiteBloodCellCount);
+
+    }
+
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DateCreated)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExamDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ResultsDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Hemoglobin)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Hematocrit)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WhiteBloodCellCount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RedBloodCellCount)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateCreated)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ExamDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ResultsDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Hemoglobin)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Hematocrit)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.WhiteBloodCellCount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RedBloodCellCount)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+<figure class="highcharts-figure">
+    <div id="container"></div>
+    <p class="highcharts-description">
+        This chart shows how data labels can be added to the data series. This
+        can increase readability and comprehension for small datasets.
+    </p>
+</figure>
+<script>
+    Highcharts.chart('container', {
+        chart: {
+            type: 'line'
+        },
+        title: {
+            text: ' blood Work report'
+        },
+
+        xAxis: {
+            categories:       @Html.Raw(Json.Serialize(Dates))
+
+        },
+        yAxis: {
+            title: {
+                text: 'Values'
+            }
+        },
+
+        series: [{
+            name: 'Hemoglobin',
+            data:@Html.Raw(Json.Serialize(hemoglobin))
+        },
+            {
+
+                name: 'Hematocrit',
+               data:@Html.Raw(Json.Serialize(hematocrit))
+
+        },  {
+                   name: 'RedBlood',
+               data:@Html.Raw(Json.Serialize(redblood))
+
+        },  {
+                  name: 'WhiteBlood',
+               data:@Html.Raw(Json.Serialize(whiteblood))
+
+            }]
+    });
+</script>
